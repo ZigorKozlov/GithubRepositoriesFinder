@@ -8,38 +8,6 @@
 
 import UIKit
 
-//MARK: declarate RequestGithubData struct
-struct RequestGithubData: Codable {
-    
-    var items: [Items]?
-    
-    struct Items: Codable {
-        enum CodingKeys: String, CodingKey{
-            case name
-            case description
-            case url
-            case owner
-        }
-        var name: String?
-        var description: String?
-        var url: String?
-        var owner: Owner?
-        
-        struct Owner: Codable {
-            var login: String?
-            var avatarURL: String?
-            var url: String?
-            var avatar: UIImage?
-
-            enum CodingKeys: String, CodingKey{
-                case login
-                case avatarURL = "avatar_url"
-                case url
-            }
-        }
-
-    }
-}
 
 //MARK: - MainTableViewController
 class MainTableViewController: UITableViewController {
@@ -55,7 +23,14 @@ class MainTableViewController: UITableViewController {
     //MARK: - ViewDidLoad()
     override func viewDidLoad() {
         super.viewDidLoad()
-            
+        
+        //Регистрация ячейки
+        tableView.register(UINib(nibName: "MyTableViewMainCell", bundle: nil), forCellReuseIdentifier: "tVMainCell")
+        
+        //Настройки navigation Bar
+        navigationItem.title = "Finder github rep"
+        navigationController?.navigationBar.prefersLargeTitles = true
+        
         //setup the searchController
         searchController.searchResultsUpdater = self //Получатель информации об изменинии в строке поиска данный класс
         searchController.obscuresBackgroundDuringPresentation = false // Что бы не затемнялся отображаемый при поиске контент
@@ -77,18 +52,20 @@ class MainTableViewController: UITableViewController {
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "tVMainCell", for: indexPath)//Для переиспользования ячеек( эффективное использование памяти)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "tVMainCell", for: indexPath) as! MyTableViewMainCell//Для переиспользования ячеек( эффективное использование памяти)
 
         // Configure the cell...
-        cell.textLabel?.numberOfLines = 2
         
-        cell.textLabel?.text = respData?.items?[indexPath.row].name
+       // cell.textLabel?.text = respData?.items?[indexPath.row].name
+        cell.topLable.text = respData?.items?[indexPath.row].name
+        cell.BottomLable.text = respData?.items?[indexPath.row].description
         
         return cell
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
         
        
     }
@@ -144,9 +121,10 @@ class MainTableViewController: UITableViewController {
 extension MainTableViewController: UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
+        
         guard let searchText = searchController.searchBar.text else { return }
-        count += 1
-        print(count)
+        guard searchText != "" else { return }
+
         let foundStr = "https://api.github.com/search/repositories?q=" + searchText.lowercased()
         foundGithubRep(to: foundStr)
     }
@@ -156,10 +134,10 @@ extension MainTableViewController: UISearchResultsUpdating {
             else { return }
         
         URLSession.shared.dataTask(with: url) { (data, responce, error) in
-           
-            if let responce = responce {
-                print(responce)
-            }
+//
+//            if let responce = responce {
+//                print(responce)
+//            }
             
             guard let data = data else { return }
             
@@ -178,7 +156,5 @@ extension MainTableViewController: UISearchResultsUpdating {
             
         }.resume()
     }
-    
-    
 }
 
