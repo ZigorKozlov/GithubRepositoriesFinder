@@ -12,13 +12,14 @@ import UIKit
 //MARK: - MainTableViewController
 class MainTableViewController: UITableViewController {
 
+    var task: URLSessionDataTask?
+    
     //UISearchController
     private var searchController = UISearchController(searchResultsController: nil)
     
     //responceData
     private var respData: RequestGithubData?
-    private var filredArray = [RequestGithubData.Items]()
-        
+    private var savedData: RequestGithubData.Items? 
     
     //MARK: - ViewDidLoad()
     override func viewDidLoad() {
@@ -26,10 +27,9 @@ class MainTableViewController: UITableViewController {
         
         //Регистрация ячейки
         tableView.register(UINib(nibName: "MyTableViewMainCell", bundle: nil), forCellReuseIdentifier: "tVMainCell")
+        searchController.automaticallyShowsSearchResultsController = true
+        searchController.searchBar.isSearchResultsButtonSelected = true
         
-        //Настройки navigation Bar
-        navigationItem.title = "Finder github rep"
-        navigationController?.navigationBar.prefersLargeTitles = true
         
         //setup the searchController
         searchController.searchResultsUpdater = self //Получатель информации об изменинии в строке поиска данный класс
@@ -64,11 +64,14 @@ class MainTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
+        //tableView.deselectRow(at: indexPath, animated: true)
         
+        performSegue(withIdentifier: "goToSingleRepose", sender: self)//Инициируем переход
         
-       
     }
+    
+
+
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -104,18 +107,24 @@ class MainTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        if case let controller as ViewControllerSingleRepos = segue.destination, segue.identifier == "goToSingleRepose" {
+            if let index = tableView.indexPathForSelectedRow?.row{
+                controller.dataVC1 = respData?.items?[index]
+            }
+        }
+                //Аналогично верхнему условию
+        //        if segue.identifier == "goToSingleRepose" {
+        //            let controller = segue.destination as! ViewControllerSingleRepos
+        //        }
+            
     }
-    */
-    var count = 0
-}
 
+    
+}
 
 //MARK: - Extension MainTableViewController: UISearchResultsUpdating
 extension MainTableViewController: UISearchResultsUpdating {
@@ -124,21 +133,24 @@ extension MainTableViewController: UISearchResultsUpdating {
         
         guard let searchText = searchController.searchBar.text else { return }
         guard searchText != "" else { return }
-
+        
         let foundStr = "https://api.github.com/search/repositories?q=" + searchText.lowercased()
         foundGithubRep(to: foundStr)
     }
     
     func foundGithubRep(to path: String) {
+        
         guard let url = URL(string: path)
             else { return }
         
-        URLSession.shared.dataTask(with: url) { (data, responce, error) in
-//
-//            if let responce = responce {
-//                print(responce)
-//            }
+        if let task = task {
+            if task.state == .running {
+                task.cancel()
+            }
+        }
             
+        task = URLSession.shared.dataTask(with: url) { (data, _, error) in
+           
             guard let data = data else { return }
             
             do {
@@ -146,15 +158,16 @@ extension MainTableViewController: UISearchResultsUpdating {
                 decoder.dateDecodingStrategy = .iso8601
                 self.respData = try decoder.decode(RequestGithubData.self, from: data)
             } catch {
-                print( error )
             }
             
             // Отправляем вызов данного блока кода в основной поток
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
-            
-        }.resume()
+        }
+        
+        task?.resume()
+        
     }
 }
 

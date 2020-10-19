@@ -24,23 +24,24 @@ struct RequestGithubData: Codable {
         var description: String?
         var url: String?
         var owner: Owner?
-        
+        //
         struct Owner: Codable {
-            var login: String?
-            var avatarURL: String?
-            var url: String?
-
-            enum CodingKeys: String, CodingKey{
+            enum CodingKeys: String, CodingKey {
                 case login
-                case avatarURL = "avatar_url"
-                case url
             }
+            var login: String?
         }
 
     }
 }
-//Полное имя репозитория, его описание, полное имя владельца репозитория, майл владельца
-//https://developer.github.com/v3/users/#get-a-single-user
-//https://developer.github.com/v3/search/#search-repositories
-"login": "dtrupenn",
-       "id": 872147,
+
+struct UserData: Codable {
+    enum CodingKeys: String, CodingKey{
+        case avatarURL = "avatar_url"
+        case email
+    }
+    
+    var avatarURL: String?
+    var email: String?
+}
+
