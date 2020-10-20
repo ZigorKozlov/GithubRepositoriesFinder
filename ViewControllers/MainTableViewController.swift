@@ -64,10 +64,7 @@ class MainTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //tableView.deselectRow(at: indexPath, animated: true)
-        
         performSegue(withIdentifier: "goToSingleRepose", sender: self)//Инициируем переход
-        
     }
     
 
@@ -111,10 +108,12 @@ class MainTableViewController: UITableViewController {
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
         if case let controller as ViewControllerSingleRepos = segue.destination, segue.identifier == "goToSingleRepose" {
-            if let index = tableView.indexPathForSelectedRow?.row{
-                controller.dataVC1 = respData?.items?[index]
-            }
+            guard let index = tableView.indexPathForSelectedRow else { return }
+            tableView.deselectRow(at: index, animated: true)
+            controller.dataVC1 = respData?.items?[index.row]
+            
         }
                 //Аналогично верхнему условию
         //        if segue.identifier == "goToSingleRepose" {
@@ -123,7 +122,12 @@ class MainTableViewController: UITableViewController {
             
     }
 
-    
+    //MARK:- Actions
+    @IBAction func refreshControlAction(_ sender: Any) {
+        refreshControl?.endRefreshing()
+        updateSearchResults(for: searchController)
+        
+    }
 }
 
 //MARK: - Extension MainTableViewController: UISearchResultsUpdating
@@ -149,7 +153,7 @@ extension MainTableViewController: UISearchResultsUpdating {
             }
         }
             
-        task = URLSession.shared.dataTask(with: url) { (data, _, error) in
+        task = URLSession.shared.dataTask(with: url) { [unowned self](data, _, error) in
            
             guard let data = data else { return }
             
@@ -157,6 +161,7 @@ extension MainTableViewController: UISearchResultsUpdating {
                 let decoder = JSONDecoder()
                 decoder.dateDecodingStrategy = .iso8601
                 self.respData = try decoder.decode(RequestGithubData.self, from: data)
+               
             } catch {
             }
             

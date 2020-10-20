@@ -17,7 +17,7 @@ struct RequestGithubData: Codable {
         enum CodingKeys: String, CodingKey{
             case name
             case description
-            case url
+            case url = "html_url"
             case owner
         }
         var name: String?
