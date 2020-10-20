@@ -13,7 +13,9 @@ class ViewControllerSingleRepos: UIViewController {
 
     //MARK: - Data propertyes
     var dataVC1: RequestGithubData.Items?
-    var userData: UserData?
+
+    //MARK: - CallBack
+    var callBackToVC1: ( (RequestGithubData.Items?)-> () )?
     
     //MARK: - OutLets
 
@@ -93,7 +95,7 @@ class ViewControllerSingleRepos: UIViewController {
             do {
                 let decoder = JSONDecoder()
                 decoder.dateDecodingStrategy = .iso8601
-                self?.userData = try decoder.decode(UserData.self, from: data)
+                self?.dataVC1?.owner = try decoder.decode(RequestGithubData.Items.Owner.self, from: data)
                 
                 DispatchQueue.main.async {
                     self?.updateData()
@@ -114,7 +116,7 @@ class ViewControllerSingleRepos: UIViewController {
         } else {
             userNameLable.isHidden = true
         }
-        if let email =  userData?.email {
+        if let email =  dataVC1?.owner?.userEmail {
             emailLable.text = email
         } else {
             emailLable.isHidden = true
@@ -134,7 +136,7 @@ class ViewControllerSingleRepos: UIViewController {
 
     func loadAvatar() {
         DispatchQueue.main.async { [ weak self ]  in
-            guard let path = self?.userData?.avatarURL else {
+            guard let path = self?.dataVC1?.owner?.avatarURL else {
                 self?.activityIndicator.isHidden = true
                 return
             }
@@ -148,6 +150,7 @@ class ViewControllerSingleRepos: UIViewController {
             }
             
             self?.avatarImageView.image = UIImage(data: data )
+            self?.dataVC1?.owner?.avatarImage = self?.avatarImageView.image
             self?.activityIndicator.isHidden = true
         }
     }
@@ -161,7 +164,8 @@ class ViewControllerSingleRepos: UIViewController {
         let safariVC = SFSafariViewController(url: url)
         present(safariVC, animated: true, completion: nil)
     }
+    
     @IBAction func saveWasPressed(_ sender: Any) {
-        
+        callBackToVC1?(self.dataVC1)
     }
 }

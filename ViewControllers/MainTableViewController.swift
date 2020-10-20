@@ -19,7 +19,7 @@ class MainTableViewController: UITableViewController {
     
     //responceData
     private var respData: RequestGithubData?
-    private var savedData: RequestGithubData.Items? 
+    private var savedData: RequestGithubData? = RequestGithubData()
     
     //MARK: - ViewDidLoad()
     override func viewDidLoad() {
@@ -113,6 +113,29 @@ class MainTableViewController: UITableViewController {
             guard let index = tableView.indexPathForSelectedRow else { return }
             tableView.deselectRow(at: index, animated: true)
             controller.dataVC1 = respData?.items?[index.row]
+            
+            controller.callBackToVC1 = {
+                [ unowned self ]
+                ( data ) in
+                
+                //Если есть элемент с таким id то меняем его, иначе добавляем новый в сохранённые
+                for (index, elem) in (self.savedData?.items ?? []).enumerated() {
+                    if elem.id != nil, data?.id != nil, elem.id! == data!.id! {
+                        guard let data = data else { return }
+                        self.savedData?.items?[index] = data
+                        break
+                    }
+                }
+                //
+                guard let data = data else { return }
+                self.savedData?.items?.append(data)
+                
+            }
+            
+        }
+        
+        if case let controller as TableViewControllerSaved = segue.destination, segue.identifier == "goToSavedDataTVC" {
+            controller.savedData = savedData
             
         }
                 //Аналогично верхнему условию

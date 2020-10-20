@@ -10,6 +10,8 @@ import UIKit
 
 class TableViewControllerSaved: UITableViewController {
 
+    var savedData: RequestGithubData?
+    var callBackToVC1: ( (RequestGithubData?) -> () )?
     override func viewDidLoad() {
         super.viewDidLoad()
 

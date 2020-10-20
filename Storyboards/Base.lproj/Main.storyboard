@@ -23,14 +23,15 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Finder repositories" leftItemsSupplementBackButton="YES" id="epn-Jr-kJW">
-                        <barButtonItem key="rightBarButtonItem" title="Item" image="arrow.down.circle" catalog="system" id="OQC-dq-NwV">
+                        <barButtonItem key="rightBarButtonItem" title="Item" image="star.circle" catalog="system" id="OQC-dq-NwV">
                             <connections>
                                 <action selector="goTo2:" destination="8RE-MK-OMX" id="4Gh-wb-IEH"/>
-                                <segue destination="Exu-pI-FyL" kind="show" id="0TV-pc-RHK"/>
+                                <segue destination="Exu-pI-FyL" kind="show" identifier="goToSavedDataTVC" id="0TV-pc-RHK"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="12D-nr-5B9">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <connections>
                             <action selector="refreshControlAction:" destination="8RE-MK-OMX" eventType="valueChanged" id="IXn-WZ-fQ4"/>
@@ -63,7 +64,7 @@
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="Zgc-jD-cAh">
                                 <rect key="frame" x="46" y="322" width="322" height="26"/>
-                                <color key="backgroundColor" red="0.9648919427" green="0.99971669080000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" systemColor="tertiarySystemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="322" id="7Kw-lF-Bl3"/>
                                     <constraint firstAttribute="height" constant="26" id="KLt-EG-TBq"/>
@@ -75,7 +76,7 @@
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="email" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="Hmf-US-J8Z">
                                 <rect key="frame" x="46" y="368" width="322" height="26"/>
-                                <color key="backgroundColor" red="0.9648919427" green="0.99971669080000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" systemColor="tertiarySystemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="322" id="01P-yj-ysc"/>
                                     <constraint firstAttribute="height" constant="26" id="slK-cG-4P1"/>
@@ -87,7 +88,7 @@
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Repos name" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="bsF-Ur-fqQ">
                                 <rect key="frame" x="46" y="443" width="322" height="81"/>
-                                <color key="backgroundColor" red="0.9648919427" green="0.99971669080000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" systemColor="tertiarySystemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="322" id="kdA-De-KIs"/>
                                     <constraint firstAttribute="height" constant="81" id="m7N-3u-BMx"/>
@@ -98,7 +99,7 @@
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="80u-Rr-BAZ">
                                 <rect key="frame" x="46" y="549" width="322" height="168"/>
-                                <color key="backgroundColor" red="0.9648919427" green="0.99971669080000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" systemColor="tertiarySystemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="168" id="3vm-AM-0GW"/>
                                     <constraint firstAttribute="width" constant="322" id="nSQ-xp-X13"/>
@@ -127,7 +128,7 @@
                             </activityIndicatorView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Repository" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lvv-2t-i4x">
                                 <rect key="frame" x="119.5" y="408" width="175" height="27"/>
-                                <color key="backgroundColor" systemColor="systemGray6Color"/>
+                                <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="175" id="6IY-sF-qwS"/>
                                     <constraint firstAttribute="height" constant="27" id="Smp-nt-Kqw"/>
@@ -138,7 +139,7 @@
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HbG-ZD-FyZ">
                                 <rect key="frame" x="107" y="746" width="200" height="38"/>
-                                <color key="backgroundColor" red="0.9648919427" green="0.99971669080000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" systemColor="tertiarySystemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="38" id="cqK-mP-zJU"/>
                                     <constraint firstAttribute="height" constant="38" id="s2a-CX-zIH"/>
@@ -151,7 +152,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YhV-4Q-yrs">
-                                <rect key="frame" x="331" y="402" width="40" height="39"/>
+                                <rect key="frame" x="331" y="401.5" width="40" height="39"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="40" id="Vrc-DN-9pF"/>
                                     <constraint firstAttribute="height" constant="40" id="q7t-or-Lrp"/>
@@ -212,7 +213,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ik1-bq-Ell" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2621.739130434783" y="473.4375"/>
+            <point key="canvasLocation" x="2406" y="449"/>
         </scene>
         <!--Table View Controller Saved-->
         <scene sceneID="5zm-9l-olu">
@@ -233,7 +234,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2g8-wo-Z87" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2406" y="-219"/>
+            <point key="canvasLocation" x="2406" y="-210"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="nlc-MO-KZW">
@@ -255,8 +256,10 @@
         </scene>
     </scenes>
     <resources>
-        <image name="arrow.down.circle" catalog="system" width="128" height="121"/>
         <image name="star.circle" catalog="system" width="128" height="121"/>
+        <systemColor name="secondarySystemBackgroundColor">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
@@ -265,9 +268,6 @@
         </systemColor>
         <systemColor name="systemGray5Color">
             <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemGray6Color">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="tertiarySystemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
