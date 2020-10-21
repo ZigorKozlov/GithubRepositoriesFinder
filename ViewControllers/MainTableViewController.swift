@@ -19,7 +19,28 @@ class MainTableViewController: UITableViewController {
     
     //responceData
     private var respData: RequestGithubData?
-    private var savedData: RequestGithubData? = RequestGithubData()
+    private var savedData: RequestGithubData? {
+        set {
+            if let newValue = newValue {
+                let jsonEncoder = JSONEncoder()
+                let encodedData = try? jsonEncoder.encode(newValue)
+            
+                UserDefaults.standard.setValue( encodedData, forKey: "GitRepIgorKozlov")
+                UserDefaults.standard.synchronize()
+            }
+        }
+        get {
+            
+            let jsonDecoder = JSONDecoder()
+            
+            if let data = UserDefaults.standard.data(forKey: "GitRepIgorKozlov") {
+                if let decodeData = try? jsonDecoder.decode(RequestGithubData.self, from: data) {
+                    
+                    return decodeData
+                } else { return RequestGithubData() }
+            } else { return RequestGithubData() }
+        }
+    }
     
     //MARK: - ViewDidLoad()
     override func viewDidLoad() {
@@ -27,6 +48,8 @@ class MainTableViewController: UITableViewController {
         
         //Регистрация ячейки
         tableView.register(UINib(nibName: "MyTableViewMainCell", bundle: nil), forCellReuseIdentifier: "tVMainCell")
+        
+        //searchController Delegate settings
         searchController.automaticallyShowsSearchResultsController = true
         searchController.searchBar.isSearchResultsButtonSelected = true
         
@@ -56,7 +79,6 @@ class MainTableViewController: UITableViewController {
 
         // Configure the cell...
         
-       // cell.textLabel?.text = respData?.items?[indexPath.row].name
         cell.topLable.text = respData?.items?[indexPath.row].name
         cell.BottomLable.text = respData?.items?[indexPath.row].description
         
@@ -66,54 +88,20 @@ class MainTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: "goToSingleRepose", sender: self)//Инициируем переход
     }
-    
-
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
 
     
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
+        //MARK: toViewControllerSingleRepos
         if case let controller as ViewControllerSingleRepos = segue.destination, segue.identifier == "goToSingleRepose" {
             guard let index = tableView.indexPathForSelectedRow else { return }
             tableView.deselectRow(at: index, animated: true)
             controller.dataVC1 = respData?.items?[index.row]
             
+            
+            //CallBack
             controller.callBackToVC1 = {
                 [ unowned self ]
                 ( data ) in
@@ -123,7 +111,8 @@ class MainTableViewController: UITableViewController {
                     if elem.id != nil, data?.id != nil, elem.id! == data!.id! {
                         guard let data = data else { return }
                         self.savedData?.items?[index] = data
-                        break
+
+                        return
                     }
                 }
                 //
@@ -131,18 +120,20 @@ class MainTableViewController: UITableViewController {
                 self.savedData?.items?.append(data)
                 
             }
+            //
             
         }
         
+        //MARK: - ToViewControllerSaved
         if case let controller as TableViewControllerSaved = segue.destination, segue.identifier == "goToSavedDataTVC" {
             controller.savedData = savedData
             
+            controller.callBackToVC1 =  {
+                [unowned self]
+                (data) in
+                savedData = data
+            }
         }
-                //Аналогично верхнему условию
-        //        if segue.identifier == "goToSingleRepose" {
-        //            let controller = segue.destination as! ViewControllerSingleRepos
-        //        }
-            
     }
 
     //MARK:- Actions

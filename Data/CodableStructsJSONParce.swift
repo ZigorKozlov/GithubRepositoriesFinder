@@ -10,7 +10,7 @@ import UIKit
 //MARK: declarate RequestGithubData struct
 struct RequestGithubData: Codable {
     
-    var items: [Items]?
+    var items: [Items]? = []
     
     struct Items: Codable {
         enum CodingKeys: String, CodingKey{
@@ -33,21 +33,9 @@ struct RequestGithubData: Codable {
                 case avatarURL = "avatar_url"
             }
             var login: String?
-            var avatarImage: UIImage?
             var userEmail: String?
             var avatarURL: String?
         }
 
     }
 }
-
-//struct UserData: Codable {
-//    enum CodingKeys: String, CodingKey{
-//        case avatarURL = "avatar_url"
-//        case email
-//    }
-//
-//    var avatarURL: String?
-//    var email: String?
-//    var avatar: UIImage?
-//}

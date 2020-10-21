@@ -18,7 +18,7 @@ class ViewControllerSingleRepos: UIViewController {
     var callBackToVC1: ( (RequestGithubData.Items?)-> () )?
     
     //MARK: - OutLets
-
+    @IBOutlet weak var saveButton: UIButton!
     @IBOutlet weak var safariButton: UIButton!
     @IBOutlet weak var avatarImageView: UIImageView!
     @IBOutlet weak var topLable: UILabel!
@@ -34,9 +34,13 @@ class ViewControllerSingleRepos: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        updateData()
         loadUserData(with: dataVC1?.owner?.login)
         
         //MARK: -lable settings
+        //saveButton
+        saveButton.layer.cornerRadius = saveButton.layer.frame.size.height / 5
+        
         //avatarImageView
         avatarImageView.layer.cornerRadius = avatarImageView.layer.frame.size.height / 2
         avatarImageView.clipsToBounds = true
@@ -79,12 +83,11 @@ class ViewControllerSingleRepos: UIViewController {
         topLable.layer.cornerRadius = topLable.frame.size.width / 10
         topLable.clipsToBounds = true
         
-
- 
     }
     //MARK: - Load and update data
+    
     func loadUserData(with name: String?) {
-
+        
         guard let name = name else { return }
 
         guard let url = URL(string: "https://api.github.com/users/" + name ) else { return }
@@ -150,7 +153,6 @@ class ViewControllerSingleRepos: UIViewController {
             }
             
             self?.avatarImageView.image = UIImage(data: data )
-            self?.dataVC1?.owner?.avatarImage = self?.avatarImageView.image
             self?.activityIndicator.isHidden = true
         }
     }
@@ -167,5 +169,6 @@ class ViewControllerSingleRepos: UIViewController {
     
     @IBAction func saveWasPressed(_ sender: Any) {
         callBackToVC1?(self.dataVC1)
+        (sender as? UIButton)?.backgroundColor = UIColor.darkGray
     }
 }

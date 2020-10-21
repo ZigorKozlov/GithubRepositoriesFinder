@@ -207,15 +207,16 @@
                         <outlet property="nameRepositoryLable" destination="bsF-Ur-fqQ" id="1r8-DU-REY"/>
                         <outlet property="repositoryLable" destination="lvv-2t-i4x" id="S90-eV-Nno"/>
                         <outlet property="safariButton" destination="HbG-ZD-FyZ" id="xQL-bd-X3C"/>
+                        <outlet property="saveButton" destination="YhV-4Q-yrs" id="P02-WF-idb"/>
                         <outlet property="topLable" destination="pzT-Y3-hjy" id="KtJ-5Z-s1u"/>
                         <outlet property="userNameLable" destination="Zgc-jD-cAh" id="J8C-EX-GKg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ik1-bq-Ell" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2406" y="449"/>
+            <point key="canvasLocation" x="2452" y="502"/>
         </scene>
-        <!--Table View Controller Saved-->
+        <!--Saved Repositories-->
         <scene sceneID="5zm-9l-olu">
             <objects>
                 <tableViewController id="Exu-pI-FyL" customClass="TableViewControllerSaved" customModule="gitRep" customModuleProvider="target" sceneMemberID="viewController">
@@ -228,13 +229,21 @@
                             <outlet property="delegate" destination="Exu-pI-FyL" id="io8-XE-PaB"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="mcE-E5-b58">
+                    <navigationItem key="navigationItem" title="Saved Repositories" leftItemsSupplementBackButton="YES" id="mcE-E5-b58">
                         <barButtonItem key="backBarButtonItem" title="back" id="sag-v5-fl2"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="MmC-U1-6zq">
+                            <connections>
+                                <action selector="editPressed:" destination="Exu-pI-FyL" id="QFk-Hj-cJi"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <segue destination="YvY-dy-qvj" kind="presentation" identifier="goTosavedSingleVC" id="dNj-hJ-fGp"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2g8-wo-Z87" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2406" y="-210"/>
+            <point key="canvasLocation" x="2452" y="-605"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="nlc-MO-KZW">
@@ -255,6 +264,9 @@
             <point key="canvasLocation" x="731.8840579710145" y="103.79464285714285"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="dNj-hJ-fGp"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="star.circle" catalog="system" width="128" height="121"/>
         <systemColor name="secondarySystemBackgroundColor">
